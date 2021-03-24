@@ -8,6 +8,10 @@ def getLastestFileName():
     # 
     try:
         fileName = max([f for f in os.listdir(path)], key=lambda x: os.path.getmtime(os.path.join(path, x)))
+        # f for f in os.listdir(path) 等於下面3行
+        # fileList = []
+        # for f in os.listdir(path):
+        #     fileList.append(f)
     except:
         fileName = max([f for f in os.listdir(path)], key=lambda x: os.path.getmtime(os.path.join(path, x)))  
     return fileName
@@ -68,3 +72,4 @@ for item in Select(browser.find_element_by_id('station')).options:
     changeName(f"{item.text}.csv")
     break
     
+
