@@ -3,18 +3,23 @@ from selenium.webdriver.support.ui import Select
 import time
 import shutil
 import os
+
+
 def getLastestFileName():
-    path = 'C:\\Users\\User\\Downloads'
-    # 
+    path = '/Users/wuyubin/Downloads'
+    #
     try:
-        fileName = max([f for f in os.listdir(path)], key=lambda x: os.path.getmtime(os.path.join(path, x)))
+        fileName = max([f for f in os.listdir(path)],
+                       key=lambda x: os.path.getmtime(os.path.join(path, x)))
         # f for f in os.listdir(path) 等於下面3行
         # fileList = []
         # for f in os.listdir(path):
         #     fileList.append(f)
     except:
-        fileName = max([f for f in os.listdir(path)], key=lambda x: os.path.getmtime(os.path.join(path, x)))  
+        fileName = max([f for f in os.listdir(path)],
+                       key=lambda x: os.path.getmtime(os.path.join(path, x)))
     return fileName
+
 
 def changeName(finalName):
     # 偵測檔案是否下載完成，完成下載的檔名最後會是.csv
@@ -22,11 +27,12 @@ def changeName(finalName):
         fileName = getLastestFileName()
         if fileName.endswith('.csv'):
             break
-    path = 'C:\\Users\\User\\Downloads'
+    path = '/Users/wuyubin/Downloads'
     # 更改檔名
     shutil.move(f'{path}\\{fileName}', f'{path}\\{finalName}')
 
-browser = webdriver.Chrome('./class_2/chromedriver.exe')
+
+browser = webdriver.Chrome('class_2/chromedriver')
 browser.get('https://e-service.cwb.gov.tw/HistoryDataQuery/')
 
 # 非同步式載入的網頁才要用while loop
@@ -50,7 +56,7 @@ for item in Select(browser.find_element_by_id('stationCounty')).options:
 for item in Select(browser.find_element_by_id('station')).options:
     # 選擇測站 id = station
     Select(browser.find_element_by_id('station'))\
-            .select_by_visible_text(item.text)
+        .select_by_visible_text(item.text)
 
     # 時間欄中輸入值 id = datepicker
     browser.find_element_by_id('datepicker').send_keys('2021-03-22')
@@ -61,8 +67,9 @@ for item in Select(browser.find_element_by_id('station')).options:
     windows = browser.window_handles
     browser.switch_to_window(windows[-1])
     # 點選路徑為 xpath 的圖片
-    browser.find_element_by_xpath("//input[@src='images/downloadCSV_2.png']").click()
-    
+    browser.find_element_by_xpath(
+        "//input[@src='images/downloadCSV_2.png']").click()
+
     # 關閉視窗
     browser.close()
     # 切換為原視窗
@@ -71,5 +78,3 @@ for item in Select(browser.find_element_by_id('station')).options:
     time.sleep(1)
     changeName(f"{item.text}.csv")
     break
-    
-
